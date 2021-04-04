@@ -9,16 +9,23 @@ BuildRequires: clang
 %description
 
 %prep
-cat > test.c <<EOF
+cat > test.cpp <<EOF
 #include <complex.h>
 int main(void) {
-    int class=0;
-    return class;
+    return 0;
 }
 EOF
 
 %build
-clang test.c -o test
+clang --version
+clang++ --version
+
+for file in $(find /usr/include/ -name complex.h); do
+  rpm -qf "${file}"
+done
+
+clang -o test test.cpp
+clang++ -o test_cpp test.cpp
 
 %install
 mkdir -p %{buildroot}/%{_bindir}
